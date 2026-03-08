@@ -74,7 +74,7 @@ const Admin = () => {
           }}
         >
           <div className="text-center mb-4">
-            <h1 className="ark-display text-foreground text-xl normal-case mb-1">Arkos</h1>
+            <h1 className="ark-display text-foreground text-xl normal-case mb-1">Ardento</h1>
             <span className="ark-mono text-[10px] uppercase tracking-widest text-foreground/25">Admin Panel</span>
           </div>
           <input
