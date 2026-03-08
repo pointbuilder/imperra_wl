@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { getContent, type SiteContent } from "@/lib/content";
+
 import { supabase } from "@/integrations/supabase/client";
 
 const smoothScroll = (id: string) => {
@@ -181,7 +181,7 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
   );
 };
 
-const Hero = ({ content }: { content: SiteContent }) => (
+const Hero = () => (
   <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
     <div className="ark-container py-32">
       <motion.h1
@@ -199,7 +199,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <p className="text-foreground/50 text-lg sm:text-xl leading-relaxed">
-          {content.heroSubtitle}
+          A leverage protocol built on top of prediction markets. Borrow, lend, and trade with up to 25× leverage — all powered by your Polymarket positions.
         </p>
       </motion.div>
       <motion.div
@@ -225,7 +225,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
   </section>
 );
 
-const Problem = ({ content }: { content: SiteContent }) => (
+const Problem = () => (
   <section id="problem" className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -238,12 +238,12 @@ const Problem = ({ content }: { content: SiteContent }) => (
         <div className="md:col-span-9">
           <FadeIn>
             <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
-              {content.problemTitle}
+              Hundreds of millions locked. Zero utility.
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              {content.problemText}
+              Prediction markets hold over $850M in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.
             </p>
           </FadeIn>
         </div>
@@ -252,7 +252,7 @@ const Problem = ({ content }: { content: SiteContent }) => (
   </section>
 );
 
-const Solution = ({ content }: { content: SiteContent }) => (
+const Solution = () => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -265,12 +265,12 @@ const Solution = ({ content }: { content: SiteContent }) => (
         <div className="md:col-span-9">
           <FadeIn>
             <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
-              {content.solutionTitle}
+              We built the fix.
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              {content.solutionText}
+              Ardento turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 25×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.
             </p>
           </FadeIn>
         </div>
@@ -279,13 +279,13 @@ const Solution = ({ content }: { content: SiteContent }) => (
   </section>
 );
 
-const Protocol = ({ content }: { content: SiteContent }) => {
+const Protocol = () => {
   const items = [
-    { num: "(A)", title: "Borrow", desc: content.borrowDesc },
-    { num: "(B)", title: "Lend", desc: content.lendDesc },
-    { num: "(C)", title: "Leverage", desc: content.leverageDesc },
-    { num: "(D)", title: "Send", desc: content.sendDesc },
-    { num: "(E)", title: "& More", desc: content.moreDesc },
+    { num: "(A)", title: "Borrow", desc: "Use your Polymarket portfolio as collateral. Our risk engine adapts to market resolution timelines — no liquidation cascades, no surprises. Just capital working for you." },
+    { num: "(B)", title: "Lend", desc: "Supply USDC to prediction-market-backed pools. Earn yield from trader leverage demand — returns uncorrelated with broader DeFi." },
+    { num: "(C)", title: "Leverage", desc: "One click. Up to 25× exposure. Our automated looping engine handles the complexity — no manual position management required." },
+    { num: "(D)", title: "Send", desc: "Share positions, split conviction across wallets, or gift leveraged exposure. Social trading in one transaction." },
+    { num: "(E)", title: "& More", desc: "Portfolio analytics, position alerts, auto-rebalancing, limit orders, and cross-market arbitrage tools. The full-stack trading layer prediction markets deserve." },
   ];
 
   return (
@@ -380,21 +380,13 @@ const Footer = () => (
 );
 
 const Index = () => {
-  const [content, setContent] = useState(getContent());
-
-  useEffect(() => {
-    const handleStorage = () => setContent(getContent());
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <Nav />
-      <Hero content={content} />
-      <Problem content={content} />
-      <Solution content={content} />
-      <Protocol content={content} />
+      <Hero />
+      <Problem />
+      <Solution />
+      <Protocol />
       <ComingSoon />
       <Footer />
     </div>
