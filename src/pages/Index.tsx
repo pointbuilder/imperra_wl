@@ -96,13 +96,12 @@ const CountdownTimer = () => {
 };
 
 const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error' | 'rate_limited'>('idle');
-  const [retryMsg, setRetryMsg] = useState('');
+  const [status, setStatus] = useState<'idle' | 'done'>('idle');
 
   return (
     <form
       className={`flex flex-col items-start gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
-      onSubmit={async (e) => {
+      onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const emailInput = form.querySelector('input') as HTMLInputElement;
@@ -115,43 +114,9 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
           return;
         }
         emailInput.setCustomValidity('');
-        setStatus('loading');
-
-        try {
-          const { error } = await supabase.functions.invoke('telegram-waitlist', {
-            body: { email },
-          });
-          if (error) throw error;
-          setStatus('done');
-          emailInput.value = '';
-        } catch (err: any) {
-          let msg = '';
-          try {
-            msg = err?.context?.body ? await err.context.text() : '';
-          } catch {}
-
-          if (msg.includes('already_registered')) {
-            setStatus('exists');
-          } else if (msg.includes('rate_limited')) {
-            setStatus('rate_limited');
-            try {
-              const parsed = JSON.parse(msg);
-              const mins = parsed.retry_after_minutes || 60;
-              if (mins >= 60) {
-                const hrs = Math.ceil(mins / 60);
-                setRetryMsg(`Try again in ${hrs}h`);
-              } else {
-                setRetryMsg(`Try again in ${mins}min`);
-              }
-            } catch {
-              setRetryMsg('Try again later');
-            }
-          } else {
-            setStatus('error');
-          }
-        }
-
-        setTimeout(() => { setStatus('idle'); setRetryMsg(''); }, 5000);
+        setStatus('done');
+        emailInput.value = '';
+        setTimeout(() => setStatus('idle'), 3000);
       }}
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
@@ -163,20 +128,11 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
         />
         <button
           type="submit"
-          disabled={status === 'loading' || status === 'rate_limited'}
-          className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
+          className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
         >
-          {status === 'idle' && '→ Submit'}
-          {status === 'loading' && '→ ...'}
-          {status === 'done' && '→ Done ✓'}
-          {status === 'exists' && '→ Already in'}
-          {status === 'error' && '→ Error'}
-          {status === 'rate_limited' && '→ Limit reached'}
+          {status === 'idle' ? '→ Submit' : '→ Done ✓'}
         </button>
       </div>
-      {status === 'rate_limited' && retryMsg && (
-        <p className="text-destructive/70 text-xs ark-mono">{retryMsg}</p>
-      )}
     </form>
   );
 };
