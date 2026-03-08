@@ -40,53 +40,131 @@ const Nav = () => (
 );
 
 const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error'>('idle');
+  const [step, setStep] = useState<'email' | 'code'>('email');
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error' | 'invalid_code' | 'expired' | 'rate_limited'>('idle');
+
+  const parseError = async (err: any): Promise<string> => {
+    try {
+      const text = err?.context?.body ? await err.context.text() : '';
+      return text;
+    } catch { return ''; }
+  };
+
+  const handleSendCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmed)) return;
+
+    setStatus('loading');
+    try {
+      const { error } = await supabase.functions.invoke('send-verification', {
+        body: { email: trimmed },
+      });
+      if (error) throw error;
+      setStep('code');
+      setStatus('idle');
+    } catch (err: any) {
+      const msg = await parseError(err);
+      if (msg.includes('already_registered')) setStatus('exists');
+      else if (msg.includes('rate_limited')) setStatus('rate_limited');
+      else setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (code.trim().length !== 6) return;
+
+    setStatus('loading');
+    try {
+      const { error } = await supabase.functions.invoke('verify-waitlist', {
+        body: { email: email.trim(), code: code.trim() },
+      });
+      if (error) throw error;
+      setStatus('done');
+      setStep('email');
+      setEmail('');
+      setCode('');
+    } catch (err: any) {
+      const msg = await parseError(err);
+      if (msg.includes('invalid_code')) setStatus('invalid_code');
+      else if (msg.includes('expired')) setStatus('expired');
+      else if (msg.includes('already_registered')) setStatus('exists');
+      else if (msg.includes('too_many_attempts')) setStatus('rate_limited');
+      else setStatus('error');
+    }
+    setTimeout(() => setStatus('idle'), 4000);
+  };
+
+  if (status === 'done') {
+    return (
+      <div className={`${compact ? 'max-w-md' : 'max-w-lg'}`}>
+        <p className="text-foreground ark-mono text-sm">✓ You're on the list. We'll be in touch.</p>
+      </div>
+    );
+  }
+
+  if (step === 'code') {
+    return (
+      <form
+        className={`flex flex-col gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
+        onSubmit={handleVerifyCode}
+      >
+        <p className="text-foreground/40 text-sm">
+          Code sent to <span className="text-foreground/70 ark-mono">{email.trim()}</span>
+        </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <input
+            type="text"
+            inputMode="numeric"
+            maxLength={6}
+            required
+            placeholder="000000"
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-2xl ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors tracking-[0.5em]"
+            autoFocus
+          />
+          <button
+            type="submit"
+            disabled={status === 'loading' || code.length !== 6}
+            className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
+          >
+            {status === 'idle' && '→ Verify'}
+            {status === 'loading' && '→ ...'}
+            {status === 'invalid_code' && '→ Wrong code'}
+            {status === 'expired' && '→ Expired'}
+            {status === 'exists' && '→ Already in'}
+            {status === 'rate_limited' && '→ Too many tries'}
+            {status === 'error' && '→ Error'}
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={() => { setStep('email'); setCode(''); setStatus('idle'); }}
+          className="text-foreground/30 text-xs ark-mono uppercase tracking-widest hover:text-foreground/60 transition-colors self-start"
+        >
+          ← Different email
+        </button>
+      </form>
+    );
+  }
 
   return (
     <form
       className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const emailInput = form.querySelector('input') as HTMLInputElement;
-        const email = emailInput.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailRegex.test(email)) {
-          emailInput.setCustomValidity('Enter a valid email');
-          emailInput.reportValidity();
-          return;
-        }
-        emailInput.setCustomValidity('');
-        setStatus('loading');
-
-        try {
-          const { data, error } = await supabase.functions.invoke('telegram-waitlist', {
-            body: { email },
-          });
-          if (error) {
-            // Check response body for specific errors
-            throw error;
-          }
-          setStatus('done');
-          emailInput.value = '';
-        } catch (err: any) {
-          // Try to parse the error context
-          const msg = err?.context?.body ? await err.context.text().catch(() => '') : '';
-          if (msg.includes('already_registered')) {
-            setStatus('exists');
-          } else {
-            setStatus('error');
-          }
-        }
-
-        setTimeout(() => setStatus('idle'), 4000);
-      }}
+      onSubmit={handleSendCode}
     >
       <input
         type="email"
         required
         placeholder="your@email.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
       />
       <button
@@ -94,10 +172,10 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
         disabled={status === 'loading'}
         className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
       >
-        {status === 'idle' && '→ Submit'}
+        {status === 'idle' && '→ Get code'}
         {status === 'loading' && '→ ...'}
-        {status === 'done' && '→ Done ✓'}
         {status === 'exists' && '→ Already in'}
+        {status === 'rate_limited' && '→ Too many requests'}
         {status === 'error' && '→ Error'}
       </button>
     </form>
