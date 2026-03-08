@@ -225,7 +225,7 @@ const Hero = () => (
   </section>
 );
 
-const Problem = ({ content }: { content: SiteContent }) => (
+const Problem = () => (
   <section id="problem" className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -238,12 +238,12 @@ const Problem = ({ content }: { content: SiteContent }) => (
         <div className="md:col-span-9">
           <FadeIn>
             <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
-              {content.problemTitle}
+              Hundreds of millions locked. Zero utility.
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              {content.problemText}
+              Prediction markets hold over $850M in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.
             </p>
           </FadeIn>
         </div>
