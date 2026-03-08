@@ -28,7 +28,7 @@ const Nav = () => (
   <nav className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
     <div className="ark-container flex items-center justify-between h-16 sm:h-20">
       <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-foreground text-lg font-bold uppercase tracking-wider">
-        Arkos
+        Ardento
       </button>
       <div className="flex items-center gap-6 sm:gap-10">
         <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
@@ -190,7 +190,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        Arkos
+        Ardento
       </motion.h1>
       <motion.div
         className="mt-8 sm:mt-12 max-w-lg"
@@ -367,7 +367,7 @@ const Footer = () => (
     <div className="ark-container">
       <div className="ark-divider mb-10" />
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
+        <span className="text-foreground font-bold uppercase tracking-wider text-sm">Ardento</span>
         <div className="flex items-center gap-8">
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>

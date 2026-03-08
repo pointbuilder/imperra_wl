@@ -99,12 +99,12 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Arkos <onboarding@resend.dev>',
+        from: 'Ardento <onboarding@resend.dev>',
         to: [trimmed],
-        subject: 'Your Arkos verification code',
+        subject: 'Your Ardento verification code',
         html: `
           <div style="font-family: 'Space Grotesk', Arial, sans-serif; background: #000; color: #fff; padding: 40px; max-width: 480px;">
-            <h1 style="font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 24px;">Arkos</h1>
+            <h1 style="font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 24px;">Ardento</h1>
             <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin: 0 0 24px;">Your verification code:</p>
             <div style="font-size: 36px; font-weight: 700; letter-spacing: 8px; font-family: 'Space Mono', monospace; margin: 0 0 24px;">${code}</div>
             <p style="color: rgba(255,255,255,0.25); font-size: 12px; margin: 0;">This code expires in 10 minutes. If you didn't request this, ignore this email.</p>

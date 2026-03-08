@@ -74,7 +74,7 @@ const Admin = () => {
           }}
         >
           <div className="text-center mb-4">
-            <h1 className="ark-display text-foreground text-xl normal-case mb-1">Arkos</h1>
+            <h1 className="ark-display text-foreground text-xl normal-case mb-1">Ardento</h1>
             <span className="ark-mono text-[10px] uppercase tracking-widest text-foreground/25">Admin Panel</span>
           </div>
           <input
@@ -123,7 +123,7 @@ const Admin = () => {
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="ark-container flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
+            <span className="text-foreground font-bold uppercase tracking-wider text-sm">Ardento</span>
             <span className="ark-mono text-[10px] text-foreground/20 uppercase tracking-widest">Admin</span>
           </div>
           <div className="flex items-center gap-4">
