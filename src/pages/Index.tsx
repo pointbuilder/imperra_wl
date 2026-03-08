@@ -39,6 +39,62 @@ const Nav = () => (
   </nav>
 );
 
+const WAITLIST_OPEN_DATE = new Date('2026-03-25T00:00:00Z');
+
+const useCountdown = () => {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const diff = WAITLIST_OPEN_DATE.getTime() - now;
+  if (diff <= 0) return null;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+  return { days, hours, minutes, seconds };
+};
+
+const CountdownTimer = () => {
+  const countdown = useCountdown();
+
+  if (!countdown) {
+    return <WaitlistForm />;
+  }
+
+  const units = [
+    { value: countdown.days, label: 'Days' },
+    { value: countdown.hours, label: 'Hours' },
+    { value: countdown.minutes, label: 'Min' },
+    { value: countdown.seconds, label: 'Sec' },
+  ];
+
+  return (
+    <div>
+      <div className="flex items-start gap-4 sm:gap-8">
+        {units.map((unit, i) => (
+          <div key={unit.label} className="flex items-start gap-4 sm:gap-8">
+            <div className="text-center">
+              <span className="ark-display text-foreground text-4xl sm:text-6xl lg:text-7xl block tabular-nums">
+                {String(unit.value).padStart(2, '0')}
+              </span>
+              <span className="ark-mono text-[10px] sm:text-xs uppercase tracking-widest text-foreground/30 mt-2 block">
+                {unit.label}
+              </span>
+            </div>
+            {i < units.length - 1 && (
+              <span className="ark-display text-foreground/20 text-3xl sm:text-5xl lg:text-6xl mt-0.5">:</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error' | 'rate_limited'>('idle');
   const [retryMsg, setRetryMsg] = useState('');
