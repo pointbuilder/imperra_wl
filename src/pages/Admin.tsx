@@ -28,17 +28,17 @@ const Admin = () => {
             type="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
-            placeholder="Пароль"
+            placeholder="Password"
             className="bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
           />
           <button
             type="submit"
             className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity self-start"
           >
-            → Войти
+            → Sign In
           </button>
           {pass && pass !== ADMIN_PASS && (
-            <span className="text-destructive text-xs ark-mono">Неверный пароль</span>
+            <span className="text-destructive text-xs ark-mono">Wrong password</span>
           )}
         </form>
       </div>
@@ -62,12 +62,12 @@ const Admin = () => {
   };
 
   const fields: { key: keyof SiteContent; label: string; multiline?: boolean }[] = [
-    { key: "heroSubtitle", label: "Hero — подзаголовок", multiline: true },
-    { key: "statementText", label: "Statement — основной текст", multiline: true },
-    { key: "borrowDesc", label: "Borrow — описание", multiline: true },
-    { key: "lendDesc", label: "Lend — описание", multiline: true },
-    { key: "leverageDesc", label: "Leverage — описание", multiline: true },
-    { key: "securityText", label: "Security — описание", multiline: true },
+    { key: "heroSubtitle", label: "Hero — subtitle", multiline: true },
+    { key: "statementText", label: "Statement — main text", multiline: true },
+    { key: "borrowDesc", label: "Borrow — description", multiline: true },
+    { key: "lendDesc", label: "Lend — description", multiline: true },
+    { key: "leverageDesc", label: "Leverage — description", multiline: true },
+    { key: "securityText", label: "Security — description", multiline: true },
     { key: "maxLtv", label: "Max LTV" },
     { key: "projectedApy", label: "Projected APY" },
     { key: "maxLeverage", label: "Max Leverage" },
@@ -83,7 +83,7 @@ const Admin = () => {
             href="/"
             className="text-foreground/30 text-sm ark-mono uppercase tracking-widest hover:text-foreground transition-colors"
           >
-            ← Сайт
+            ← Site
           </a>
         </div>
 
@@ -116,16 +116,16 @@ const Admin = () => {
             onClick={handleSave}
             className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity"
           >
-            → Сохранить
+            → Save
           </button>
           <button
             onClick={handleReset}
             className="text-foreground/30 text-sm ark-mono uppercase tracking-widest hover:text-foreground transition-colors"
           >
-            Сбросить
+            Reset
           </button>
           {saved && (
-            <span className="text-foreground/50 text-xs ark-mono">Сохранено ✓</span>
+            <span className="text-foreground/50 text-xs ark-mono">Saved ✓</span>
           )}
         </div>
       </div>

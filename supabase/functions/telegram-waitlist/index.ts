@@ -25,7 +25,7 @@ serve(async (req) => {
     const TELEGRAM_CHAT_ID = Deno.env.get('TELEGRAM_CHAT_ID');
     if (!TELEGRAM_CHAT_ID) throw new Error('TELEGRAM_CHAT_ID not configured');
 
-    const text = `🚀 *Arkos Waitlist*\n\nНовая заявка: \`${email}\`\n\n_${new Date().toISOString()}_`;
+    const text = `🚀 *Arkos Waitlist*\n\nNew signup: \`${email}\`\n\n_${new Date().toISOString()}_`;
 
     const tgRes = await fetch(
       `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
