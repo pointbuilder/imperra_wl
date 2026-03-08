@@ -369,9 +369,9 @@ const Footer = () => (
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
         <div className="flex items-center gap-8">
-          <a href="https://twitter.com" target="_blank" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Twitter</a>
-          <a href="#" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Discord</a>
-          <a href="#" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Docs</a>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Docs</span>
         </div>
         <span className="ark-mono text-xs text-foreground/15">© 2026</span>
       </div>
