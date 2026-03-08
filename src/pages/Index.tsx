@@ -33,7 +33,7 @@ const Nav = () => (
       <div className="flex items-center gap-6 sm:gap-10">
         <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
         <button onClick={() => smoothScroll('solution')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Solution</button>
-        <a href="https://twitter.com" target="_blank" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Twitter ↗</a>
+        <span className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-30 cursor-not-allowed" title="Coming soon">Twitter</span>
       </div>
     </div>
   </nav>
@@ -369,9 +369,9 @@ const Footer = () => (
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
         <div className="flex items-center gap-8">
-          <a href="https://twitter.com" target="_blank" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Twitter</a>
-          <a href="#" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Discord</a>
-          <a href="#" className="ark-mono text-xs uppercase tracking-widest text-foreground/30 hover:text-foreground transition-colors">Docs</a>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Docs</span>
         </div>
         <span className="ark-mono text-xs text-foreground/15">© 2026</span>
       </div>
