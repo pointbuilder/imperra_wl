@@ -40,11 +40,12 @@ const Nav = () => (
 );
 
 const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error' | 'rate_limited'>('idle');
+  const [retryMsg, setRetryMsg] = useState('');
 
   return (
     <form
-      className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
+      className={`flex flex-col items-start gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
       onSubmit={async (e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -68,34 +69,58 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
           setStatus('done');
           emailInput.value = '';
         } catch (err: any) {
-          const msg = err?.context?.body ? await err.context.text().catch(() => '') : '';
+          let msg = '';
+          try {
+            msg = err?.context?.body ? await err.context.text() : '';
+          } catch {}
+
           if (msg.includes('already_registered')) {
             setStatus('exists');
+          } else if (msg.includes('rate_limited')) {
+            setStatus('rate_limited');
+            try {
+              const parsed = JSON.parse(msg);
+              const mins = parsed.retry_after_minutes || 60;
+              if (mins >= 60) {
+                const hrs = Math.ceil(mins / 60);
+                setRetryMsg(`Try again in ${hrs}h`);
+              } else {
+                setRetryMsg(`Try again in ${mins}min`);
+              }
+            } catch {
+              setRetryMsg('Try again later');
+            }
           } else {
             setStatus('error');
           }
         }
 
-        setTimeout(() => setStatus('idle'), 4000);
+        setTimeout(() => { setStatus('idle'); setRetryMsg(''); }, 5000);
       }}
     >
-      <input
-        type="email"
-        required
-        placeholder="your@email.com"
-        className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
-      />
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
-      >
-        {status === 'idle' && '→ Submit'}
-        {status === 'loading' && '→ ...'}
-        {status === 'done' && '→ Done ✓'}
-        {status === 'exists' && '→ Already in'}
-        {status === 'error' && '→ Error'}
-      </button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+        <input
+          type="email"
+          required
+          placeholder="your@email.com"
+          className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
+        />
+        <button
+          type="submit"
+          disabled={status === 'loading' || status === 'rate_limited'}
+          className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
+        >
+          {status === 'idle' && '→ Submit'}
+          {status === 'loading' && '→ ...'}
+          {status === 'done' && '→ Done ✓'}
+          {status === 'exists' && '→ Already in'}
+          {status === 'error' && '→ Error'}
+          {status === 'rate_limited' && '→ Limit reached'}
+        </button>
+      </div>
+      {status === 'rate_limited' && retryMsg && (
+        <p className="text-destructive/70 text-xs ark-mono">{retryMsg}</p>
+      )}
     </form>
   );
 };
