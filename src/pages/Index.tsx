@@ -47,7 +47,7 @@ const Hero = () => (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        <a href="#waitlist" className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
+        <button onClick={() => smoothScroll('waitlist')} className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
           Join Waitlist
         </a>
         <span className="text-foreground/20 ark-mono text-xs">Pre-Seed 2026</span>
