@@ -425,11 +425,11 @@ const Waitlist = () => (
           </FadeIn>
           <FadeIn delay={0.1}>
             <p className="text-foreground/30 text-base mb-10 max-w-lg">
-              Be among the first to leverage prediction markets. Limited spots available.
+              Waitlist opens March 25. Be among the first to leverage prediction markets.
             </p>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <WaitlistForm />
+            <CountdownTimer />
           </FadeIn>
         </div>
       </div>
