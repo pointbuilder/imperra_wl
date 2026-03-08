@@ -1,6 +1,5 @@
 import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 
 
 
@@ -34,7 +33,7 @@ const Nav = () => (
       <div className="flex items-center gap-6 sm:gap-10">
         <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
         <button onClick={() => smoothScroll('solution')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Solution</button>
-        <Link to="/docs" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Docs</Link>
+        <span className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-30 cursor-not-allowed" title="Coming soon">Docs</span>
         <span className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-30 cursor-not-allowed" title="Coming soon">Twitter</span>
       </div>
     </div>
@@ -329,7 +328,7 @@ const Footer = () => (
         <div className="flex items-center gap-8">
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>
-          <Link to="/docs" className="ark-mono text-xs uppercase tracking-widest text-foreground/40 hover:text-foreground transition-colors">Docs</Link>
+          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Docs</span>
         </div>
         <span className="ark-mono text-xs text-foreground/15">© 2026</span>
       </div>
