@@ -28,7 +28,7 @@ const Admin = () => {
             type="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
-            placeholder="Пароль"
+            placeholder="Password"
             className="bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
           />
           <button
