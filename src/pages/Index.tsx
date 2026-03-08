@@ -395,9 +395,7 @@ const Index = () => {
       <Problem content={content} />
       <Solution content={content} />
       <Protocol content={content} />
-      <Metrics content={content} />
       <Security content={content} />
-      <Waitlist />
       <Footer />
     </div>
   );
