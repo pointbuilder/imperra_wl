@@ -25,14 +25,14 @@ const FadeIn = ({ children, className = "", delay = 0 }: { children: React.React
 };
 
 const Nav = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+  <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
     <div className="ark-container flex items-center justify-between h-16 sm:h-20">
       <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-foreground text-lg font-bold uppercase tracking-wider">
         Arkos
       </button>
       <div className="flex items-center gap-6 sm:gap-10">
         <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
-        <button onClick={() => smoothScroll('protocol')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Protocol</button>
+        <button onClick={() => smoothScroll('solution')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Solution</button>
         <a href="https://twitter.com" target="_blank" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Twitter ↗</a>
       </div>
     </div>
