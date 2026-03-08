@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { getContent, type SiteContent } from "@/lib/content";
 
 const smoothScroll = (id: string) => {
   const el = document.getElementById(id);
@@ -20,7 +22,7 @@ const Nav = () => (
   </nav>
 );
 
-const Hero = () => (
+const Hero = ({ content }: { content: SiteContent }) => (
   <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
     <div className="ark-container py-32">
       <motion.h1
@@ -38,7 +40,7 @@ const Hero = () => (
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <p className="text-foreground/50 text-base sm:text-lg leading-relaxed">
-          The liquidity layer for prediction markets. Borrow, lend, and leverage your Polymarket positions.
+          {content.heroSubtitle}
         </p>
       </motion.div>
       <motion.div
@@ -53,8 +55,6 @@ const Hero = () => (
         <span className="text-foreground/20 ark-mono text-xs">Pre-Seed 2026</span>
       </motion.div>
     </div>
-
-    {/* Scroll indicator */}
     <motion.div
       className="absolute bottom-10 left-1/2 -translate-x-1/2"
       initial={{ opacity: 0 }}
@@ -66,7 +66,7 @@ const Hero = () => (
   </section>
 );
 
-const Statement = () => (
+const Statement = ({ content }: { content: SiteContent }) => (
   <section id="about" className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -76,7 +76,7 @@ const Statement = () => (
         </div>
         <div className="md:col-span-9">
           <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case">
-            Prediction markets are the largest untapped collateral base in crypto. Arkos unlocks it.
+            {content.statementText}
           </h2>
         </div>
       </div>
@@ -84,11 +84,11 @@ const Statement = () => (
   </section>
 );
 
-const Protocol = () => {
+const Protocol = ({ content }: { content: SiteContent }) => {
   const items = [
-    { num: "(A)", title: "Borrow", desc: "Use Polymarket positions as collateral. Borrow up to 50% of their value. Capped rates. Repay anytime." },
-    { num: "(B)", title: "Lend", desc: "Supply USDC to curated pools. Earn yield from prediction market traders. Uncorrelated returns up to 30% APY." },
-    { num: "(C)", title: "Leverage", desc: "One-click 2x leverage on any position. Loop collateral automatically. No additional capital required." },
+    { num: "(A)", title: "Borrow", desc: content.borrowDesc },
+    { num: "(B)", title: "Lend", desc: content.lendDesc },
+    { num: "(C)", title: "Leverage", desc: content.leverageDesc },
   ];
 
   return (
@@ -105,7 +105,6 @@ const Protocol = () => {
             </h2>
           </div>
         </div>
-
         <div className="space-y-0">
           {items.map((item) => (
             <div key={item.title} className="border-t border-border py-10 sm:py-14 group">
@@ -133,7 +132,7 @@ const Protocol = () => {
   );
 };
 
-const Numbers = () => (
+const Numbers = ({ content }: { content: SiteContent }) => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -147,13 +146,12 @@ const Numbers = () => (
           </h2>
         </div>
       </div>
-
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border">
         {[
-          { val: "50%", label: "Max LTV" },
-          { val: "~30%", label: "Projected APY" },
-          { val: "2×", label: "Max Leverage" },
-          { val: "$50M+", label: "Target TVL" },
+          { val: content.maxLtv, label: "Max LTV" },
+          { val: content.projectedApy, label: "Projected APY" },
+          { val: content.maxLeverage, label: "Max Leverage" },
+          { val: content.targetTvl, label: "Target TVL" },
         ].map((s) => (
           <div key={s.label} className="bg-background p-8 sm:p-12">
             <span className="ark-display text-foreground text-4xl sm:text-6xl lg:text-7xl block mb-3">{s.val}</span>
@@ -165,7 +163,7 @@ const Numbers = () => (
   </section>
 );
 
-const Security = () => (
+const Security = ({ content }: { content: SiteContent }) => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -179,7 +177,7 @@ const Security = () => (
             <span className="text-foreground/20">Always.</span>
           </h2>
           <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-            Built on Morpho — a lending protocol with $5B+ in deposits, audited 34 times by 14 security firms. We never have access to your funds. Your positions, your keys, your control.
+            {content.securityText}
           </p>
         </div>
       </div>
@@ -203,8 +201,15 @@ const Waitlist = () => (
             className="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-lg"
             onSubmit={(e) => {
               e.preventDefault();
-              const btn = (e.target as HTMLFormElement).querySelector('button');
+              const form = e.target as HTMLFormElement;
+              const emailInput = form.querySelector('input') as HTMLInputElement;
+              const btn = form.querySelector('button') as HTMLButtonElement;
+              
+              // TODO: send to Telegram bot via edge function
+              console.log('Waitlist email:', emailInput.value);
+              
               if (btn) btn.textContent = '→ Done';
+              emailInput.value = '';
             }}
           >
             <input
@@ -243,17 +248,27 @@ const Footer = () => (
   </footer>
 );
 
-const Index = () => (
-  <div className="min-h-screen bg-background">
-    <Nav />
-    <Hero />
-    <Statement />
-    <Protocol />
-    <Numbers />
-    <Security />
-    <Waitlist />
-    <Footer />
-  </div>
-);
+const Index = () => {
+  const [content, setContent] = useState(getContent());
+
+  useEffect(() => {
+    const handleStorage = () => setContent(getContent());
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Nav />
+      <Hero content={content} />
+      <Statement content={content} />
+      <Protocol content={content} />
+      <Numbers content={content} />
+      <Security content={content} />
+      <Waitlist />
+      <Footer />
+    </div>
+  );
+};
 
 export default Index;
