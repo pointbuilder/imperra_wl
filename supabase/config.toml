@@ -1,1 +1,10 @@
 project_id = "elqukdwawemsitgseyml"
+
+[functions.send-verification]
+verify_jwt = false
+
+[functions.verify-waitlist]
+verify_jwt = false
+
+[functions.telegram-waitlist]
+verify_jwt = false
