@@ -39,7 +39,7 @@ const Nav = () => (
   </nav>
 );
 
-const WAITLIST_OPEN_DATE = new Date('2026-03-25T00:00:00Z');
+const WAITLIST_OPEN_DATE = new Date('2026-04-10T00:00:00Z');
 
 const useCountdown = () => {
   const [now, setNow] = useState(Date.now());
