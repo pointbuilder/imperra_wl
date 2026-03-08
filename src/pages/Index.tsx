@@ -23,6 +23,50 @@ const Nav = () => (
   </nav>
 );
 
+const WaitlistForm = ({ compact = false }: { compact?: boolean }) => (
+  <form
+    className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
+    onSubmit={async (e) => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const emailInput = form.querySelector('input') as HTMLInputElement;
+      const btn = form.querySelector('button') as HTMLButtonElement;
+      const email = emailInput.value;
+
+      btn.textContent = '→ ...';
+      btn.disabled = true;
+
+      try {
+        await supabase.functions.invoke('telegram-waitlist', {
+          body: { email },
+        });
+        btn.textContent = '→ Done ✓';
+        emailInput.value = '';
+      } catch {
+        btn.textContent = '→ Error';
+      }
+
+      setTimeout(() => {
+        btn.textContent = '→ Submit';
+        btn.disabled = false;
+      }, 3000);
+    }}
+  >
+    <input
+      type="email"
+      required
+      placeholder="your@email.com"
+      className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
+    />
+    <button
+      type="submit"
+      className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
+    >
+      → Submit
+    </button>
+  </form>
+);
+
 const Hero = ({ content }: { content: SiteContent }) => (
   <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
     <div className="ark-container py-32">
@@ -45,15 +89,15 @@ const Hero = ({ content }: { content: SiteContent }) => (
         </p>
       </motion.div>
       <motion.div
-        className="mt-12 flex items-center gap-6"
+        className="mt-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        <button onClick={() => smoothScroll('waitlist')} className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
-          Join Waitlist
-        </button>
-        <span className="text-foreground/20 ark-mono text-xs">Pre-Seed 2026</span>
+        <p className="ark-mono text-xs uppercase tracking-widest text-foreground/25 mb-5">
+          Join the waitlist — Pre-Seed 2026
+        </p>
+        <WaitlistForm />
       </motion.div>
     </div>
     <motion.div
@@ -195,50 +239,13 @@ const Waitlist = () => (
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(005)</span>
         </div>
         <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-10">
+          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-4">
             Early access
           </h2>
-          <form
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-lg"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const form = e.target as HTMLFormElement;
-              const emailInput = form.querySelector('input') as HTMLInputElement;
-              const btn = form.querySelector('button') as HTMLButtonElement;
-              const email = emailInput.value;
-              
-              btn.textContent = '→ ...';
-              btn.disabled = true;
-
-              try {
-                await supabase.functions.invoke('telegram-waitlist', {
-                  body: { email },
-                });
-                btn.textContent = '→ Done ✓';
-                emailInput.value = '';
-              } catch {
-                btn.textContent = '→ Error';
-              }
-
-              setTimeout(() => {
-                btn.textContent = '→ Submit';
-                btn.disabled = false;
-              }, 3000);
-            }}
-          >
-            <input
-              type="email"
-              required
-              placeholder="your@email.com"
-              className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
-            />
-            <button
-              type="submit"
-              className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
-            >
-              → Submit
-            </button>
-          </form>
+          <p className="text-foreground/30 text-base mb-10 max-w-lg">
+            Be among the first to leverage prediction markets. Limited spots available.
+          </p>
+          <WaitlistForm />
         </div>
       </div>
     </div>
