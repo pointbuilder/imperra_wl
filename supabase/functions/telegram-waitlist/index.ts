@@ -47,14 +47,14 @@ serve(async (req) => {
       });
     }
 
-    // Rate limit: max 5 signups per minute from same IP
+    // Rate limit: max 5 signups per day from same IP
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-    const oneMinuteAgo = new Date(Date.now() - 60_000).toISOString();
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
     const { count } = await supabase
       .from('waitlist')
       .select('id', { count: 'exact', head: true })
       .eq('ip_address', ip)
-      .gte('created_at', oneMinuteAgo);
+      .gte('created_at', oneDayAgo);
 
     if ((count ?? 0) >= 5) {
       return new Response(JSON.stringify({ error: 'rate_limited' }), {
