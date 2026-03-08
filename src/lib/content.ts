@@ -20,7 +20,7 @@ const STORAGE_KEY = "arkos-content";
 
 export const defaultContent: SiteContent = {
   heroSubtitle:
-    "A leverage protocol built on top of prediction markets.",
+    "A leverage protocol built on top of prediction markets. Borrow, lend, and trade with up to 10× leverage — all powered by your Polymarket positions.",
   problemTitle: "Billions locked. Zero utility.",
   problemText:
     "Prediction markets hold over $10B in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.",

@@ -198,7 +198,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <p className="text-foreground/50 text-xl sm:text-2xl lg:text-3xl leading-relaxed">
+        <p className="text-foreground/50 text-lg sm:text-xl leading-relaxed">
           {content.heroSubtitle}
         </p>
       </motion.div>
@@ -335,31 +335,26 @@ const Protocol = ({ content }: { content: SiteContent }) => {
   );
 };
 
-const Security = ({ content }: { content: SiteContent }) => (
+const ComingSoon = () => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-3">
           <FadeIn>
-            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004) Security</span>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004) Stay tuned</span>
           </FadeIn>
         </div>
         <div className="md:col-span-9">
           <FadeIn>
-            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-12">
-              Non-custodial.<br />
-              <span className="text-foreground/20">Always.</span>
+            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-8">
+              More info<br />
+              <span className="text-foreground/20">coming soon.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              {content.securityText}
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.25}>
-            <p className="text-foreground/20 text-sm ark-mono mt-8">
-              More details coming soon. Stay tuned.
+              We're building something big. Security details, tokenomics, and technical documentation will be shared as we approach launch.
             </p>
           </FadeIn>
         </div>
@@ -400,7 +395,7 @@ const Index = () => {
       <Problem content={content} />
       <Solution content={content} />
       <Protocol content={content} />
-      <Security content={content} />
+      <ComingSoon />
       <Footer />
     </div>
   );
