@@ -289,7 +289,7 @@ const Protocol = ({ content }: { content: SiteContent }) => {
   ];
 
   return (
-    <section id="protocol" className="py-24 sm:py-40">
+    <section id="solution" className="py-24 sm:py-40">
       <div className="ark-container">
         <div className="ark-divider mb-16" />
         <div className="grid md:grid-cols-12 gap-8 mb-20">
