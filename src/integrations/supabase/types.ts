@@ -14,60 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      waitlist: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          ip_address: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          ip_address?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          ip_address?: string | null
-        }
-        Relationships: []
-      }
-      waitlist_verifications: {
-        Row: {
-          attempts: number
-          code: string
-          created_at: string
-          email: string
-          expires_at: string
-          id: string
-          ip_address: string | null
-          verified: boolean
-        }
-        Insert: {
-          attempts?: number
-          code: string
-          created_at?: string
-          email: string
-          expires_at?: string
-          id?: string
-          ip_address?: string | null
-          verified?: boolean
-        }
-        Update: {
-          attempts?: number
-          code?: string
-          created_at?: string
-          email?: string
-          expires_at?: string
-          id?: string
-          ip_address?: string | null
-          verified?: boolean
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
