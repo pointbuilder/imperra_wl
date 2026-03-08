@@ -190,7 +190,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        Arkos
+        Ardento
       </motion.h1>
       <motion.div
         className="mt-8 sm:mt-12 max-w-lg"
