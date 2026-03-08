@@ -134,6 +134,8 @@ const Protocol = ({ content }: { content: SiteContent }) => {
     { num: "(A)", title: "Borrow", desc: content.borrowDesc },
     { num: "(B)", title: "Lend", desc: content.lendDesc },
     { num: "(C)", title: "Leverage", desc: content.leverageDesc },
+    { num: "(D)", title: "Send", desc: content.sendDesc },
+    { num: "(E)", title: "& More", desc: content.moreDesc },
   ];
 
   return (
