@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getContent, type SiteContent } from "@/lib/content";
+import { supabase } from "@/integrations/supabase/client";
 
 const smoothScroll = (id: string) => {
   const el = document.getElementById(id);
@@ -199,17 +200,30 @@ const Waitlist = () => (
           </h2>
           <form
             className="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-lg"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
               const form = e.target as HTMLFormElement;
               const emailInput = form.querySelector('input') as HTMLInputElement;
               const btn = form.querySelector('button') as HTMLButtonElement;
+              const email = emailInput.value;
               
-              // TODO: send to Telegram bot via edge function
-              console.log('Waitlist email:', emailInput.value);
-              
-              if (btn) btn.textContent = '→ Done';
-              emailInput.value = '';
+              btn.textContent = '→ ...';
+              btn.disabled = true;
+
+              try {
+                await supabase.functions.invoke('telegram-waitlist', {
+                  body: { email },
+                });
+                btn.textContent = '→ Done ✓';
+                emailInput.value = '';
+              } catch {
+                btn.textContent = '→ Error';
+              }
+
+              setTimeout(() => {
+                btn.textContent = '→ Submit';
+                btn.disabled = false;
+              }, 3000);
             }}
           >
             <input
