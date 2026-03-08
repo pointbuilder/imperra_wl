@@ -166,6 +166,8 @@ const Admin = () => {
             <Field label="Borrow" value={content.borrowDesc} onChange={(v) => update("borrowDesc", v)} multiline />
             <Field label="Lend" value={content.lendDesc} onChange={(v) => update("lendDesc", v)} multiline />
             <Field label="Leverage" value={content.leverageDesc} onChange={(v) => update("leverageDesc", v)} multiline />
+            <Field label="Send" value={content.sendDesc} onChange={(v) => update("sendDesc", v)} multiline />
+            <Field label="& More" value={content.moreDesc} onChange={(v) => update("moreDesc", v)} multiline />
           </Section>
 
           <div className="space-y-6">
