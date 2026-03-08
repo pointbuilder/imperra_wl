@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,38 +7,49 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 217 38% 28%;
+    --foreground: 0 0% 7%;
 
     --card: 0 0% 100%;
-    --card-foreground: 217 38% 28%;
+    --card-foreground: 0 0% 7%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 217 38% 28%;
+    --popover-foreground: 0 0% 7%;
 
-    --primary: 217 38% 28%;
+    --primary: 0 0% 7%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 20% 96%;
-    --secondary-foreground: 217 38% 28%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 7%;
 
-    --muted: 220 20% 96%;
-    --muted-foreground: 217 20% 50%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 220 20% 96%;
-    --accent-foreground: 217 38% 28%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 7%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 90%;
-    --input: 220 20% 90%;
-    --ring: 217 38% 28%;
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
+    --ring: 0 0% 7%;
 
     --radius: 0.5rem;
 
-    --navy: 217 38% 28%;
-    --navy-light: 217 30% 50%;
-    --navy-muted: 217 20% 70%;
+    /* Exro custom tokens */
+    --exro-green: 152 60% 44%;
+    --exro-green-light: 152 60% 95%;
+    --exro-red: 0 72% 56%;
+    --exro-red-light: 0 72% 96%;
+    --exro-blue: 220 80% 56%;
+    --exro-blue-light: 220 80% 96%;
+    --exro-gray-50: 0 0% 98%;
+    --exro-gray-100: 0 0% 96%;
+    --exro-gray-200: 0 0% 92%;
+    --exro-gray-300: 0 0% 82%;
+    --exro-gray-500: 0 0% 45%;
+    --exro-gray-700: 0 0% 25%;
+    --exro-gray-900: 0 0% 7%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -58,37 +69,57 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
 @layer components {
-  .font-display {
-    font-family: 'EB Garamond', 'Georgia', serif;
-  }
-
-  .container-gondor {
-    @apply max-w-[1400px] mx-auto px-5 sm:px-8;
+  .container-exro {
+    @apply max-w-[1280px] mx-auto px-4 sm:px-6;
   }
 }
 
 @layer utilities {
-  .text-navy {
-    color: hsl(var(--navy));
+  .text-exro-green {
+    color: hsl(var(--exro-green));
   }
-
-  .text-navy-light {
-    color: hsl(var(--navy-light));
+  .text-exro-red {
+    color: hsl(var(--exro-red));
   }
-
-  .text-navy-muted {
-    color: hsl(var(--navy-muted));
+  .text-exro-blue {
+    color: hsl(var(--exro-blue));
   }
-
-  .bg-navy {
-    background-color: hsl(var(--navy));
+  .text-exro-gray-500 {
+    color: hsl(var(--exro-gray-500));
   }
-
-  .border-navy {
-    border-color: hsl(var(--navy));
+  .text-exro-gray-700 {
+    color: hsl(var(--exro-gray-700));
+  }
+  .bg-exro-green {
+    background-color: hsl(var(--exro-green));
+  }
+  .bg-exro-green-light {
+    background-color: hsl(var(--exro-green-light));
+  }
+  .bg-exro-red {
+    background-color: hsl(var(--exro-red));
+  }
+  .bg-exro-red-light {
+    background-color: hsl(var(--exro-red-light));
+  }
+  .bg-exro-blue-light {
+    background-color: hsl(var(--exro-blue-light));
+  }
+  .bg-exro-gray-50 {
+    background-color: hsl(var(--exro-gray-50));
+  }
+  .bg-exro-gray-100 {
+    background-color: hsl(var(--exro-gray-100));
+  }
+  .border-exro-gray-200 {
+    border-color: hsl(var(--exro-gray-200));
+  }
+  .hover\:bg-exro-gray-50:hover {
+    background-color: hsl(var(--exro-gray-50));
   }
 }
