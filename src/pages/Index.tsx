@@ -33,7 +33,7 @@ const Nav = () => (
       <div className="flex items-center gap-6 sm:gap-10">
         <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
         <button onClick={() => smoothScroll('solution')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Solution</button>
-        <a href="https://twitter.com" target="_blank" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Twitter ↗</a>
+        <span className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-30 cursor-not-allowed" title="Coming soon">Twitter</span>
       </div>
     </div>
   </nav>
