@@ -35,10 +35,10 @@ const Admin = () => {
             type="submit"
             className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity self-start"
           >
-            → Войти
+            → Sign In
           </button>
           {pass && pass !== ADMIN_PASS && (
-            <span className="text-destructive text-xs ark-mono">Неверный пароль</span>
+            <span className="text-destructive text-xs ark-mono">Wrong password</span>
           )}
         </form>
       </div>
