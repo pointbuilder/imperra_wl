@@ -181,7 +181,7 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
   );
 };
 
-const Hero = ({ content }: { content: SiteContent }) => (
+const Hero = () => (
   <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
     <div className="ark-container py-32">
       <motion.h1
@@ -199,7 +199,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <p className="text-foreground/50 text-lg sm:text-xl leading-relaxed">
-          {content.heroSubtitle}
+          A leverage protocol built on top of prediction markets. Borrow, lend, and trade with up to 25× leverage — all powered by your Polymarket positions.
         </p>
       </motion.div>
       <motion.div
