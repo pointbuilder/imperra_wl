@@ -279,13 +279,13 @@ const Solution = () => (
   </section>
 );
 
-const Protocol = ({ content }: { content: SiteContent }) => {
+const Protocol = () => {
   const items = [
-    { num: "(A)", title: "Borrow", desc: content.borrowDesc },
-    { num: "(B)", title: "Lend", desc: content.lendDesc },
-    { num: "(C)", title: "Leverage", desc: content.leverageDesc },
-    { num: "(D)", title: "Send", desc: content.sendDesc },
-    { num: "(E)", title: "& More", desc: content.moreDesc },
+    { num: "(A)", title: "Borrow", desc: "Use your Polymarket portfolio as collateral. Our risk engine adapts to market resolution timelines — no liquidation cascades, no surprises. Just capital working for you." },
+    { num: "(B)", title: "Lend", desc: "Supply USDC to prediction-market-backed pools. Earn yield from trader leverage demand — returns uncorrelated with broader DeFi." },
+    { num: "(C)", title: "Leverage", desc: "One click. Up to 25× exposure. Our automated looping engine handles the complexity — no manual position management required." },
+    { num: "(D)", title: "Send", desc: "Share positions, split conviction across wallets, or gift leveraged exposure. Social trading in one transaction." },
+    { num: "(E)", title: "& More", desc: "Portfolio analytics, position alerts, auto-rebalancing, limit orders, and cross-market arbitrage tools. The full-stack trading layer prediction markets deserve." },
   ];
 
   return (
