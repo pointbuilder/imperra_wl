@@ -62,12 +62,12 @@ const Admin = () => {
   };
 
   const fields: { key: keyof SiteContent; label: string; multiline?: boolean }[] = [
-    { key: "heroSubtitle", label: "Hero — подзаголовок", multiline: true },
-    { key: "statementText", label: "Statement — основной текст", multiline: true },
-    { key: "borrowDesc", label: "Borrow — описание", multiline: true },
-    { key: "lendDesc", label: "Lend — описание", multiline: true },
-    { key: "leverageDesc", label: "Leverage — описание", multiline: true },
-    { key: "securityText", label: "Security — описание", multiline: true },
+    { key: "heroSubtitle", label: "Hero — subtitle", multiline: true },
+    { key: "statementText", label: "Statement — main text", multiline: true },
+    { key: "borrowDesc", label: "Borrow — description", multiline: true },
+    { key: "lendDesc", label: "Lend — description", multiline: true },
+    { key: "leverageDesc", label: "Leverage — description", multiline: true },
+    { key: "securityText", label: "Security — description", multiline: true },
     { key: "maxLtv", label: "Max LTV" },
     { key: "projectedApy", label: "Projected APY" },
     { key: "maxLeverage", label: "Max Leverage" },
