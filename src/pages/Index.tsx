@@ -1,11 +1,27 @@
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { getContent, type SiteContent } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 
 const smoothScroll = (id: string) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+const FadeIn = ({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 const Nav = () => (
@@ -15,7 +31,7 @@ const Nav = () => (
         Arkos
       </button>
       <div className="flex items-center gap-6 sm:gap-10">
-        <button onClick={() => smoothScroll('about')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">About</button>
+        <button onClick={() => smoothScroll('problem')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Problem</button>
         <button onClick={() => smoothScroll('protocol')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Protocol</button>
         <a href="https://twitter.com" target="_blank" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Twitter ↗</a>
       </div>
@@ -23,58 +39,70 @@ const Nav = () => (
   </nav>
 );
 
-const WaitlistForm = ({ compact = false }: { compact?: boolean }) => (
-  <form
-    className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
-    onSubmit={async (e) => {
-      e.preventDefault();
-      const form = e.target as HTMLFormElement;
-      const emailInput = form.querySelector('input') as HTMLInputElement;
-      const btn = form.querySelector('button') as HTMLButtonElement;
-      const email = emailInput.value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'exists' | 'error'>('idle');
 
-      if (!emailRegex.test(email)) {
-        emailInput.setCustomValidity('Enter a valid email');
-        emailInput.reportValidity();
-        return;
-      }
-      emailInput.setCustomValidity('');
+  return (
+    <form
+      className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const emailInput = form.querySelector('input') as HTMLInputElement;
+        const email = emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      btn.textContent = '→ ...';
-      btn.disabled = true;
+        if (!emailRegex.test(email)) {
+          emailInput.setCustomValidity('Enter a valid email');
+          emailInput.reportValidity();
+          return;
+        }
+        emailInput.setCustomValidity('');
+        setStatus('loading');
 
-      try {
-        const { error } = await supabase.functions.invoke('telegram-waitlist', {
-          body: { email },
-        });
-        if (error) throw error;
-        btn.textContent = '→ Done ✓';
-        emailInput.value = '';
-      } catch {
-        btn.textContent = '→ Error';
-      }
+        try {
+          const { data, error } = await supabase.functions.invoke('telegram-waitlist', {
+            body: { email },
+          });
+          if (error) {
+            // Check response body for specific errors
+            throw error;
+          }
+          setStatus('done');
+          emailInput.value = '';
+        } catch (err: any) {
+          // Try to parse the error context
+          const msg = err?.context?.body ? await err.context.text().catch(() => '') : '';
+          if (msg.includes('already_registered')) {
+            setStatus('exists');
+          } else {
+            setStatus('error');
+          }
+        }
 
-      setTimeout(() => {
-        btn.textContent = '→ Submit';
-        btn.disabled = false;
-      }, 3000);
-    }}
-  >
-    <input
-      type="email"
-      required
-      placeholder="your@email.com"
-      className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
-    />
-    <button
-      type="submit"
-      className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
+        setTimeout(() => setStatus('idle'), 4000);
+      }}
     >
-      → Submit
-    </button>
-  </form>
-);
+      <input
+        type="email"
+        required
+        placeholder="your@email.com"
+        className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
+      />
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-30"
+      >
+        {status === 'idle' && '→ Submit'}
+        {status === 'loading' && '→ ...'}
+        {status === 'done' && '→ Done ✓'}
+        {status === 'exists' && '→ Already in'}
+        {status === 'error' && '→ Error'}
+      </button>
+    </form>
+  );
+};
 
 const Hero = ({ content }: { content: SiteContent }) => (
   <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
@@ -93,7 +121,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <p className="text-foreground/50 text-base sm:text-lg leading-relaxed">
+        <p className="text-foreground/50 text-lg sm:text-xl leading-relaxed">
           {content.heroSubtitle}
         </p>
       </motion.div>
@@ -120,18 +148,54 @@ const Hero = ({ content }: { content: SiteContent }) => (
   </section>
 );
 
-const Statement = ({ content }: { content: SiteContent }) => (
-  <section id="about" className="py-24 sm:py-40">
+const Problem = ({ content }: { content: SiteContent }) => (
+  <section id="problem" className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-3">
-          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(001)</span>
+          <FadeIn>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(001) The Problem</span>
+          </FadeIn>
         </div>
         <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case">
-            {content.statementText}
-          </h2>
+          <FadeIn>
+            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
+              {content.problemTitle}
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
+              {content.problemText}
+            </p>
+          </FadeIn>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const Solution = ({ content }: { content: SiteContent }) => (
+  <section className="py-24 sm:py-40">
+    <div className="ark-container">
+      <div className="ark-divider mb-16" />
+      <div className="grid md:grid-cols-12 gap-8">
+        <div className="md:col-span-3">
+          <FadeIn>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(002) The Solution</span>
+          </FadeIn>
+        </div>
+        <div className="md:col-span-9">
+          <FadeIn>
+            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
+              {content.solutionTitle}
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
+              {content.solutionText}
+            </p>
+          </FadeIn>
         </div>
       </div>
     </div>
@@ -153,33 +217,39 @@ const Protocol = ({ content }: { content: SiteContent }) => {
         <div className="ark-divider mb-16" />
         <div className="grid md:grid-cols-12 gap-8 mb-20">
           <div className="md:col-span-3">
-            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(002)</span>
+            <FadeIn>
+              <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(003) Protocol</span>
+            </FadeIn>
           </div>
           <div className="md:col-span-9">
-            <h2 className="ark-display text-foreground text-3xl sm:text-5xl normal-case">
-              Protocol
-            </h2>
+            <FadeIn>
+              <h2 className="ark-display text-foreground text-3xl sm:text-5xl normal-case">
+                What you can do
+              </h2>
+            </FadeIn>
           </div>
         </div>
         <div className="space-y-0">
-          {items.map((item) => (
-            <div key={item.title} className="border-t border-border py-10 sm:py-14 group">
-              <div className="grid md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-1">
-                  <span className="ark-mono text-xs text-foreground/30">{item.num}</span>
-                </div>
-                <div className="md:col-span-4">
-                  <h3 className="ark-display text-foreground text-4xl sm:text-6xl lg:text-7xl normal-case group-hover:opacity-60 transition-opacity duration-500">
-                    {item.title}
-                  </h3>
-                </div>
-                <div className="md:col-span-7 md:pt-4">
-                  <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-lg">
-                    {item.desc}
-                  </p>
+          {items.map((item, i) => (
+            <FadeIn key={item.title} delay={i * 0.05}>
+              <div className="border-t border-border py-10 sm:py-14 group">
+                <div className="grid md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-1">
+                    <span className="ark-mono text-xs text-foreground/30">{item.num}</span>
+                  </div>
+                  <div className="md:col-span-4">
+                    <h3 className="ark-display text-foreground text-4xl sm:text-6xl lg:text-7xl normal-case group-hover:opacity-60 transition-opacity duration-500">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <div className="md:col-span-7 md:pt-4">
+                    <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-lg">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeIn>
           ))}
           <div className="border-t border-border" />
         </div>
@@ -188,36 +258,49 @@ const Protocol = ({ content }: { content: SiteContent }) => {
   );
 };
 
-const Numbers = ({ content }: { content: SiteContent }) => (
-  <section className="py-24 sm:py-40">
-    <div className="ark-container">
-      <div className="ark-divider mb-16" />
-      <div className="grid md:grid-cols-12 gap-8 mb-16">
-        <div className="md:col-span-3">
-          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(003)</span>
-        </div>
-        <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl normal-case">
-            Numbers
-          </h2>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-        {[
-          { val: content.maxLtv, label: "Max LTV" },
-          { val: content.projectedApy, label: "Projected APY" },
-          { val: content.maxLeverage, label: "Max Leverage" },
-          { val: content.targetTvl, label: "Target TVL" },
-        ].map((s) => (
-          <div key={s.label} className="bg-background p-8 sm:p-12">
-            <span className="ark-display text-foreground text-4xl sm:text-6xl lg:text-7xl block mb-3">{s.val}</span>
-            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">{s.label}</span>
+const Metrics = ({ content }: { content: SiteContent }) => {
+  const metrics = [
+    { val: content.maxLtv, label: "Max LTV", desc: "Borrow up to half the value of your positions" },
+    { val: content.projectedApy, label: "Projected APY", desc: "Expected yield for USDC lenders" },
+    { val: content.maxLeverage, label: "Max Leverage", desc: "Amplify your conviction with one click" },
+    { val: content.targetTvl, label: "Target TVL", desc: "First-year protocol capacity goal" },
+  ];
+
+  return (
+    <section className="py-24 sm:py-40">
+      <div className="ark-container">
+        <div className="ark-divider mb-16" />
+        <div className="grid md:grid-cols-12 gap-8 mb-16">
+          <div className="md:col-span-3">
+            <FadeIn>
+              <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004) By the numbers</span>
+            </FadeIn>
           </div>
-        ))}
+          <div className="md:col-span-9">
+            <FadeIn>
+              <h2 className="ark-display text-foreground text-3xl sm:text-5xl normal-case">
+                Built to perform
+              </h2>
+            </FadeIn>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {metrics.map((m, i) => (
+            <FadeIn key={m.label} delay={i * 0.1}>
+              <div className="group">
+                <span className="ark-display text-foreground text-5xl sm:text-6xl lg:text-7xl block mb-4 group-hover:opacity-60 transition-opacity duration-500">
+                  {m.val}
+                </span>
+                <span className="ark-mono text-xs uppercase tracking-widest text-foreground/50 block mb-2">{m.label}</span>
+                <p className="text-foreground/25 text-sm leading-relaxed">{m.desc}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Security = ({ content }: { content: SiteContent }) => (
   <section className="py-24 sm:py-40">
@@ -225,16 +308,22 @@ const Security = ({ content }: { content: SiteContent }) => (
       <div className="ark-divider mb-16" />
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-3">
-          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004)</span>
+          <FadeIn>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(005) Security</span>
+          </FadeIn>
         </div>
         <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-12">
-            Non-custodial.<br />
-            <span className="text-foreground/20">Always.</span>
-          </h2>
-          <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-            {content.securityText}
-          </p>
+          <FadeIn>
+            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-12">
+              Non-custodial.<br />
+              <span className="text-foreground/20">Always.</span>
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
+              {content.securityText}
+            </p>
+          </FadeIn>
         </div>
       </div>
     </div>
@@ -247,16 +336,24 @@ const Waitlist = () => (
       <div className="ark-divider mb-16" />
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-3">
-          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(005)</span>
+          <FadeIn>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(006) Access</span>
+          </FadeIn>
         </div>
         <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-4">
-            Early access
-          </h2>
-          <p className="text-foreground/30 text-base mb-10 max-w-lg">
-            Be among the first to leverage prediction markets. Limited spots available.
-          </p>
-          <WaitlistForm />
+          <FadeIn>
+            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-4">
+              Early access
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="text-foreground/30 text-base mb-10 max-w-lg">
+              Be among the first to leverage prediction markets. Limited spots available.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <WaitlistForm />
+          </FadeIn>
         </div>
       </div>
     </div>
@@ -293,9 +390,10 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Nav />
       <Hero content={content} />
-      <Statement content={content} />
+      <Problem content={content} />
+      <Solution content={content} />
       <Protocol content={content} />
-      <Numbers content={content} />
+      <Metrics content={content} />
       <Security content={content} />
       <Waitlist />
       <Footer />
