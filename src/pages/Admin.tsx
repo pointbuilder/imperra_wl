@@ -83,7 +83,7 @@ const Admin = () => {
             href="/"
             className="text-foreground/30 text-sm ark-mono uppercase tracking-widest hover:text-foreground transition-colors"
           >
-            ← Сайт
+            ← Site
           </a>
         </div>
 
