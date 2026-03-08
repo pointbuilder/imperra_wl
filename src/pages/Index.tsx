@@ -1,14 +1,19 @@
 import { motion } from "framer-motion";
 
+const smoothScroll = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
 const Nav = () => (
   <nav className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
     <div className="ark-container flex items-center justify-between h-16 sm:h-20">
-      <a href="/" className="text-foreground text-lg font-bold uppercase tracking-wider">
+      <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-foreground text-lg font-bold uppercase tracking-wider">
         Arkos
-      </a>
+      </button>
       <div className="flex items-center gap-6 sm:gap-10">
-        <a href="#about" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">About</a>
-        <a href="#protocol" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Protocol</a>
+        <button onClick={() => smoothScroll('about')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">About</button>
+        <button onClick={() => smoothScroll('protocol')} className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Protocol</button>
         <a href="https://twitter.com" target="_blank" className="text-foreground text-xs sm:text-sm ark-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Twitter ↗</a>
       </div>
     </div>
@@ -42,9 +47,9 @@ const Hero = () => (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        <a href="#waitlist" className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
+        <button onClick={() => smoothScroll('waitlist')} className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
           Join Waitlist
-        </a>
+        </button>
         <span className="text-foreground/20 ark-mono text-xs">Pre-Seed 2026</span>
       </motion.div>
     </div>
