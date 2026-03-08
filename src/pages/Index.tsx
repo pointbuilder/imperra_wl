@@ -25,7 +25,7 @@ const FadeIn = ({ children, className = "", delay = 0 }: { children: React.React
 };
 
 const Nav = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+  <nav className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
     <div className="ark-container flex items-center justify-between h-16 sm:h-20">
       <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-foreground text-lg font-bold uppercase tracking-wider">
         Arkos
