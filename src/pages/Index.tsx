@@ -49,7 +49,7 @@ const Hero = () => (
       >
         <button onClick={() => smoothScroll('waitlist')} className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity">
           Join Waitlist
-        </a>
+        </button>
         <span className="text-foreground/20 ark-mono text-xs">Pre-Seed 2026</span>
       </motion.div>
     </div>
