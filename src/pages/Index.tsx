@@ -209,7 +209,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         transition={{ duration: 0.6, delay: 0.6 }}
       >
         <p className="ark-mono text-xs uppercase tracking-widest text-foreground/25 mb-5">
-          Waitlist opens March 25
+          Waitlist opens April 10
         </p>
         <CountdownTimer />
       </motion.div>
