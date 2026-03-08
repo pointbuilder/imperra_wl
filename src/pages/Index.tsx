@@ -209,9 +209,9 @@ const Hero = ({ content }: { content: SiteContent }) => (
         transition={{ duration: 0.6, delay: 0.6 }}
       >
         <p className="ark-mono text-xs uppercase tracking-widest text-foreground/25 mb-5">
-          Join the waitlist — Pre-Seed 2026
+          Waitlist opens March 25 — Pre-Seed 2026
         </p>
-        <WaitlistForm />
+        <CountdownTimer />
       </motion.div>
     </div>
     <motion.div
