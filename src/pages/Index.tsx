@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getContent, type SiteContent } from "@/lib/content";
+import { supabase } from "@/integrations/supabase/client";
 
 const smoothScroll = (id: string) => {
   const el = document.getElementById(id);
