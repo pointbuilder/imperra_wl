@@ -239,50 +239,13 @@ const Waitlist = () => (
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(005)</span>
         </div>
         <div className="md:col-span-9">
-          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-10">
+          <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-4">
             Early access
           </h2>
-          <form
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-lg"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const form = e.target as HTMLFormElement;
-              const emailInput = form.querySelector('input') as HTMLInputElement;
-              const btn = form.querySelector('button') as HTMLButtonElement;
-              const email = emailInput.value;
-              
-              btn.textContent = '→ ...';
-              btn.disabled = true;
-
-              try {
-                await supabase.functions.invoke('telegram-waitlist', {
-                  body: { email },
-                });
-                btn.textContent = '→ Done ✓';
-                emailInput.value = '';
-              } catch {
-                btn.textContent = '→ Error';
-              }
-
-              setTimeout(() => {
-                btn.textContent = '→ Submit';
-                btn.disabled = false;
-              }, 3000);
-            }}
-          >
-            <input
-              type="email"
-              required
-              placeholder="your@email.com"
-              className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
-            />
-            <button
-              type="submit"
-              className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
-            >
-              → Submit
-            </button>
-          </form>
+          <p className="text-foreground/30 text-base mb-10 max-w-lg">
+            Be among the first to leverage prediction markets. Limited spots available.
+          </p>
+          <WaitlistForm />
         </div>
       </div>
     </div>
