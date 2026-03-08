@@ -4,6 +4,8 @@ export interface SiteContent {
   borrowDesc: string;
   lendDesc: string;
   leverageDesc: string;
+  sendDesc: string;
+  moreDesc: string;
   securityText: string;
   maxLtv: string;
   projectedApy: string;
@@ -24,6 +26,10 @@ export const defaultContent: SiteContent = {
     "Supply USDC to prediction-market-backed pools and earn yield from an entirely new source — trader leverage demand. Returns are uncorrelated with broader DeFi, giving your capital a differentiated risk profile that traditional lending protocols simply can't offer.",
   leverageDesc:
     "One click. Up to 10× exposure. Our automated collateral looping engine handles the complexity — no manual position management, no additional capital required. We built the infrastructure that lets you express conviction at scale.",
+  sendDesc:
+    "Share positions with friends, split conviction across wallets, or gift leveraged exposure. Social trading reimagined — send any position to any address in one transaction. Built for the way crypto communities actually trade.",
+  moreDesc:
+    "Portfolio analytics, position alerts, auto-rebalancing, limit orders on predictions, and cross-market arbitrage tools. We're building the full-stack trading layer that prediction markets deserve — and we're just getting started.",
   securityText:
     "Built on Morpho — a battle-tested lending primitive with $5B+ in deposits and 34 audits from 14 firms. We never touch your funds. Non-custodial by design, transparent by default. Your positions, your keys, your control — always.",
   maxLtv: "50%",
