@@ -357,6 +357,11 @@ const Security = ({ content }: { content: SiteContent }) => (
               {content.securityText}
             </p>
           </FadeIn>
+          <FadeIn delay={0.25}>
+            <p className="text-foreground/20 text-sm ark-mono mt-8">
+              More details coming soon. Stay tuned.
+            </p>
+          </FadeIn>
         </div>
       </div>
     </div>
