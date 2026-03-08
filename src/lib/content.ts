@@ -20,19 +20,19 @@ const STORAGE_KEY = "arkos-content";
 
 export const defaultContent: SiteContent = {
   heroSubtitle:
-    "A leverage protocol built on top of prediction markets. Borrow, lend, and trade with up to 10× leverage — all powered by your Polymarket positions.",
-  problemTitle: "Billions locked. Zero utility.",
+    "A leverage protocol built on top of prediction markets. Borrow, lend, and trade with up to 25× leverage — all powered by your Polymarket positions.",
+  problemTitle: "Hundreds of millions locked. Zero utility.",
   problemText:
-    "Prediction markets hold over $10B in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.",
+    "Prediction markets hold over $850M in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.",
   solutionTitle: "We built the fix.",
   solutionText:
-    "Arkos turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 10×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.",
+    "Arkos turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 25×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.",
   borrowDesc:
-    "Use your Polymarket portfolio as collateral. Access up to 50% LTV with fixed rates. No liquidation cascades — our risk model adapts to market resolution timelines.",
+    "Use your Polymarket portfolio as collateral. Our risk engine adapts to market resolution timelines — no liquidation cascades, no surprises. Just capital working for you.",
   lendDesc:
     "Supply USDC to prediction-market-backed pools. Earn yield from trader leverage demand — returns uncorrelated with broader DeFi.",
   leverageDesc:
-    "One click. Up to 10× exposure. Our automated looping engine handles the complexity — no manual position management required.",
+    "One click. Up to 25× exposure. Our automated looping engine handles the complexity — no manual position management required.",
   sendDesc:
     "Share positions, split conviction across wallets, or gift leveraged exposure. Social trading in one transaction.",
   moreDesc:
@@ -41,7 +41,7 @@ export const defaultContent: SiteContent = {
     "Built on Morpho — a battle-tested lending primitive with $5B+ in deposits and 34 audits from 14 firms. Non-custodial by design. Your positions, your keys, your control.",
   maxLtv: "50%",
   projectedApy: "~45%",
-  maxLeverage: "10×",
+  maxLeverage: "25×",
   targetTvl: "$50M+",
 };
 
