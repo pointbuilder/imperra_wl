@@ -16,7 +16,7 @@ export interface SiteContent {
   targetTvl: string;
 }
 
-const STORAGE_KEY = "arkos-content";
+const STORAGE_KEY = "ardento-content";
 
 export const defaultContent: SiteContent = {
   heroSubtitle:
