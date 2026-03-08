@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,42 +20,75 @@ serve(async (req) => {
       });
     }
 
+    const trimmed = email.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
+    if (!emailRegex.test(trimmed)) {
       return new Response(JSON.stringify({ error: 'Invalid email' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
+    // Check for duplicates via Supabase
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data: existing } = await supabase
+      .from('waitlist')
+      .select('id')
+      .eq('email', trimmed)
+      .maybeSingle();
+
+    if (existing) {
+      return new Response(JSON.stringify({ error: 'already_registered' }), {
+        status: 409,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Rate limit: max 5 signups per minute from same IP
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const oneMinuteAgo = new Date(Date.now() - 60_000).toISOString();
+    const { count } = await supabase
+      .from('waitlist')
+      .select('id', { count: 'exact', head: true })
+      .eq('ip_address', ip)
+      .gte('created_at', oneMinuteAgo);
+
+    if ((count ?? 0) >= 5) {
+      return new Response(JSON.stringify({ error: 'rate_limited' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Save to DB
+    const { error: insertError } = await supabase
+      .from('waitlist')
+      .insert({ email: trimmed, ip_address: ip });
+
+    if (insertError) throw insertError;
+
+    // Send Telegram notification
     const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
-    if (!TELEGRAM_BOT_TOKEN) throw new Error('TELEGRAM_BOT_TOKEN not configured');
-
     const TELEGRAM_CHAT_ID = Deno.env.get('TELEGRAM_CHAT_ID');
-    if (!TELEGRAM_CHAT_ID) throw new Error('TELEGRAM_CHAT_ID not configured');
 
-    const now = new Date();
-    const date = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const now = new Date();
+      const date = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-    const text = `New waitlist\n${email.trim()}\n${date} ${time}`;
+      const text = `New waitlist\n${trimmed}\n${date} ${time}`;
 
-    const tgRes = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text,
-          parse_mode: 'Markdown',
-        }),
-      }
-    );
-
-    const tgData = await tgRes.json();
-    if (!tgRes.ok) {
-      throw new Error(`Telegram API error [${tgRes.status}]: ${JSON.stringify(tgData)}`);
+      await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+        }
+      );
     }
 
     return new Response(JSON.stringify({ success: true }), {

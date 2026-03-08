@@ -1,6 +1,9 @@
 export interface SiteContent {
   heroSubtitle: string;
-  statementText: string;
+  problemTitle: string;
+  problemText: string;
+  solutionTitle: string;
+  solutionText: string;
   borrowDesc: string;
   lendDesc: string;
   leverageDesc: string;
@@ -17,21 +20,25 @@ const STORAGE_KEY = "arkos-content";
 
 export const defaultContent: SiteContent = {
   heroSubtitle:
-    "The first leverage protocol built on top of prediction markets. We redesigned borrowing, lending, and leverage from scratch — purpose-built for a new asset class.",
-  statementText:
-    "Prediction markets hold billions in untapped capital. Every other protocol ignores them. We built Arkos to unlock that value — a novel collateral engine that turns positions into productive assets with up to 10× leverage, passive yield, and zero custody risk.",
+    "The first leverage protocol built on top of prediction markets.",
+  problemTitle: "Billions locked. Zero utility.",
+  problemText:
+    "Prediction markets hold over $10B in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.",
+  solutionTitle: "We built the fix.",
+  solutionText:
+    "Arkos turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 10×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.",
   borrowDesc:
-    "We engineered a unique borrowing mechanism designed specifically for prediction market positions. Use your Polymarket portfolio as collateral, access up to 50% LTV with fixed rates, and repay on your terms. No liquidation cascades — our risk model adapts to market resolution timelines.",
+    "Use your Polymarket portfolio as collateral. Access up to 50% LTV with fixed rates. No liquidation cascades — our risk model adapts to market resolution timelines.",
   lendDesc:
-    "Supply USDC to prediction-market-backed pools and earn yield from an entirely new source — trader leverage demand. Returns are uncorrelated with broader DeFi, giving your capital a differentiated risk profile that traditional lending protocols simply can't offer.",
+    "Supply USDC to prediction-market-backed pools. Earn yield from trader leverage demand — returns uncorrelated with broader DeFi.",
   leverageDesc:
-    "One click. Up to 10× exposure. Our automated collateral looping engine handles the complexity — no manual position management, no additional capital required. We built the infrastructure that lets you express conviction at scale.",
+    "One click. Up to 10× exposure. Our automated looping engine handles the complexity — no manual position management required.",
   sendDesc:
-    "Share positions with friends, split conviction across wallets, or gift leveraged exposure. Social trading reimagined — send any position to any address in one transaction. Built for the way crypto communities actually trade.",
+    "Share positions, split conviction across wallets, or gift leveraged exposure. Social trading in one transaction.",
   moreDesc:
-    "Portfolio analytics, position alerts, auto-rebalancing, limit orders on predictions, and cross-market arbitrage tools. We're building the full-stack trading layer that prediction markets deserve — and we're just getting started.",
+    "Portfolio analytics, position alerts, auto-rebalancing, limit orders, and cross-market arbitrage tools. The full-stack trading layer prediction markets deserve.",
   securityText:
-    "Built on Morpho — a battle-tested lending primitive with $5B+ in deposits and 34 audits from 14 firms. We never touch your funds. Non-custodial by design, transparent by default. Your positions, your keys, your control — always.",
+    "Built on Morpho — a battle-tested lending primitive with $5B+ in deposits and 34 audits from 14 firms. Non-custodial by design. Your positions, your keys, your control.",
   maxLtv: "50%",
   projectedApy: "~45%",
   maxLeverage: "10×",

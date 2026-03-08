@@ -158,8 +158,14 @@ const Admin = () => {
             <Field label="Subtitle" value={content.heroSubtitle} onChange={(v) => update("heroSubtitle", v)} multiline />
           </Section>
 
-          <Section title="Statement" num="02">
-            <Field label="Main text" value={content.statementText} onChange={(v) => update("statementText", v)} multiline />
+          <Section title="Problem" num="02">
+            <Field label="Title" value={content.problemTitle} onChange={(v) => update("problemTitle", v)} />
+            <Field label="Text" value={content.problemText} onChange={(v) => update("problemText", v)} multiline />
+          </Section>
+
+          <Section title="Solution" num="02b">
+            <Field label="Title" value={content.solutionTitle} onChange={(v) => update("solutionTitle", v)} />
+            <Field label="Text" value={content.solutionText} onChange={(v) => update("solutionText", v)} multiline />
           </Section>
 
           <Section title="Protocol" num="03">
