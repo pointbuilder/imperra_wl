@@ -15,17 +15,17 @@ const STORAGE_KEY = "arkos-content";
 
 export const defaultContent: SiteContent = {
   heroSubtitle:
-    "Layer 2 на Polymarket. Бери в долг, давай в долг, торгуй с плечом — всё на базе предикшн-маркетов.",
+    "Layer 2 on Polymarket. Borrow, lend, and trade with leverage — all powered by prediction markets.",
   statementText:
-    "Предикшн-маркеты — крупнейший неиспользуемый залог в крипте. Arkos даёт тебе инструменты: плечо до 10×, пассивный доход от ликвидности и шеринг позиций с друзьями.",
+    "Prediction markets are the largest untapped collateral in crypto. Arkos gives you the tools: up to 10× leverage, passive yield from liquidity provision, and social position sharing with friends.",
   borrowDesc:
-    "Используй позиции на Polymarket как залог. Бери до 50% от их стоимости. Фиксированные ставки. Верни в любой момент.",
+    "Use your Polymarket positions as collateral. Borrow up to 50% of their value. Fixed rates. Repay anytime.",
   lendDesc:
-    "Поставляй USDC в курированные пулы. Зарабатывай на трейдерах предикшн-маркетов. Некоррелированная доходность.",
+    "Supply USDC to curated pools. Earn yield from prediction market traders. Uncorrelated returns.",
   leverageDesc:
-    "Одним кликом — 10× плечо на любую позицию. Автоматический лупинг залога. Без дополнительного капитала.",
+    "One click — 10× leverage on any position. Automated collateral looping. No additional capital required.",
   securityText:
-    "Построено на Morpho — лендинг-протоколе с $5B+ депозитов, прошедшем 34 аудита от 14 фирм. Мы никогда не имеем доступа к твоим средствам. Твои позиции, твои ключи, твой контроль.",
+    "Built on Morpho — a lending protocol with $5B+ in deposits and 34 audits from 14 firms. We never have access to your funds. Your positions, your keys, your control.",
   maxLtv: "50%",
   projectedApy: "~45%",
   maxLeverage: "10×",

@@ -116,16 +116,16 @@ const Admin = () => {
             onClick={handleSave}
             className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity"
           >
-            → Сохранить
+            → Save
           </button>
           <button
             onClick={handleReset}
             className="text-foreground/30 text-sm ark-mono uppercase tracking-widest hover:text-foreground transition-colors"
           >
-            Сбросить
+            Reset
           </button>
           {saved && (
-            <span className="text-foreground/50 text-xs ark-mono">Сохранено ✓</span>
+            <span className="text-foreground/50 text-xs ark-mono">Saved ✓</span>
           )}
         </div>
       </div>
