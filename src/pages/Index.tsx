@@ -252,7 +252,7 @@ const Problem = () => (
   </section>
 );
 
-const Solution = ({ content }: { content: SiteContent }) => (
+const Solution = () => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
       <div className="ark-divider mb-16" />
@@ -265,12 +265,12 @@ const Solution = ({ content }: { content: SiteContent }) => (
         <div className="md:col-span-9">
           <FadeIn>
             <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-6xl leading-[1.1] normal-case mb-8">
-              {content.solutionTitle}
+              We built the fix.
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              {content.solutionText}
+              Ardento turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 25×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.
             </p>
           </FadeIn>
         </div>
