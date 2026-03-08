@@ -354,7 +354,7 @@ const ComingSoon = () => (
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
-              We're building something big. Security details, tokenomics, and technical documentation will be shared as we approach launch.
+              We're building something big. Security details, roadmap, and technical documentation will be shared as we approach launch.
             </p>
           </FadeIn>
         </div>
