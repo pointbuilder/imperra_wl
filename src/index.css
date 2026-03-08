@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,59 +6,57 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
+    --background: 220 15% 6%;
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
+    --card: 220 15% 9%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
+    --popover: 220 15% 9%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 0 0% 7%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 220 15% 6%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 7%;
+    --secondary: 220 10% 14%;
+    --secondary-foreground: 0 0% 80%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 220 10% 14%;
+    --muted-foreground: 220 8% 55%;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 7%;
+    --accent: 160 70% 45%;
+    --accent-foreground: 220 15% 6%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 92%;
-    --input: 0 0% 92%;
-    --ring: 0 0% 7%;
+    --border: 220 10% 16%;
+    --input: 220 10% 16%;
+    --ring: 160 70% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Exro custom tokens */
-    --exro-green: 152 60% 44%;
-    --exro-green-light: 152 60% 95%;
-    --exro-red: 0 72% 56%;
-    --exro-red-light: 0 72% 96%;
-    --exro-blue: 220 80% 56%;
-    --exro-blue-light: 220 80% 96%;
-    --exro-gray-50: 0 0% 98%;
-    --exro-gray-100: 0 0% 96%;
-    --exro-gray-200: 0 0% 92%;
-    --exro-gray-300: 0 0% 82%;
-    --exro-gray-500: 0 0% 45%;
-    --exro-gray-700: 0 0% 25%;
-    --exro-gray-900: 0 0% 7%;
+    /* Arkos custom tokens */
+    --ark-green: 160 70% 45%;
+    --ark-green-glow: 160 70% 45% / 0.15;
+    --ark-blue: 210 80% 55%;
+    --ark-purple: 260 60% 60%;
+    --ark-surface: 220 15% 9%;
+    --ark-surface-hover: 220 15% 12%;
+    --ark-surface-border: 220 10% 16%;
+    --ark-text-primary: 0 0% 95%;
+    --ark-text-secondary: 220 8% 55%;
+    --ark-text-tertiary: 220 8% 38%;
+    --ark-gradient-hero: linear-gradient(135deg, hsl(160 70% 45%), hsl(210 80% 55%));
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 15% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 160 70% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 12%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 220 10% 16%;
+    --sidebar-ring: 160 70% 45%;
   }
 }
 
@@ -74,52 +72,56 @@
 }
 
 @layer components {
-  .container-exro {
-    @apply max-w-[1280px] mx-auto px-4 sm:px-6;
+  .container-ark {
+    @apply max-w-[1200px] mx-auto px-5 sm:px-8;
   }
-}
 
-@layer utilities {
-  .text-exro-green {
-    color: hsl(var(--exro-green));
+  .ark-card {
+    @apply bg-card border border-border rounded-2xl;
   }
-  .text-exro-red {
-    color: hsl(var(--exro-red));
+
+  .ark-glow {
+    box-shadow: 0 0 80px hsl(var(--ark-green) / 0.08), 0 0 200px hsl(var(--ark-green) / 0.04);
   }
-  .text-exro-blue {
-    color: hsl(var(--exro-blue));
+
+  .ark-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all;
+    background: hsl(var(--ark-green));
+    color: hsl(var(--background));
   }
-  .text-exro-gray-500 {
-    color: hsl(var(--exro-gray-500));
+
+  .ark-btn-primary:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 30px hsl(var(--ark-green) / 0.3);
   }
-  .text-exro-gray-700 {
-    color: hsl(var(--exro-gray-700));
+
+  .ark-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-sm border border-border transition-all;
+    background: hsl(var(--ark-surface));
+    color: hsl(var(--foreground));
   }
-  .bg-exro-green {
-    background-color: hsl(var(--exro-green));
+
+  .ark-btn-secondary:hover {
+    background: hsl(var(--ark-surface-hover));
+    border-color: hsl(var(--ark-green) / 0.3);
   }
-  .bg-exro-green-light {
-    background-color: hsl(var(--exro-green-light));
+
+  .ark-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border;
+    background: hsl(var(--ark-green) / 0.1);
+    color: hsl(var(--ark-green));
+    border-color: hsl(var(--ark-green) / 0.2);
   }
-  .bg-exro-red {
-    background-color: hsl(var(--exro-red));
+
+  .ark-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--ark-green)), hsl(var(--ark-blue)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .bg-exro-red-light {
-    background-color: hsl(var(--exro-red-light));
-  }
-  .bg-exro-blue-light {
-    background-color: hsl(var(--exro-blue-light));
-  }
-  .bg-exro-gray-50 {
-    background-color: hsl(var(--exro-gray-50));
-  }
-  .bg-exro-gray-100 {
-    background-color: hsl(var(--exro-gray-100));
-  }
-  .border-exro-gray-200 {
-    border-color: hsl(var(--exro-gray-200));
-  }
-  .hover\:bg-exro-gray-50:hover {
-    background-color: hsl(var(--exro-gray-50));
+
+  .ark-section-label {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] mb-4;
+    color: hsl(var(--ark-green));
   }
 }
