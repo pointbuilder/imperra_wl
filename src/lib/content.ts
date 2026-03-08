@@ -26,7 +26,7 @@ export const defaultContent: SiteContent = {
     "Prediction markets hold over $850M in open interest. Yet every dollar sitting in a position is dead capital — it can't be borrowed against, can't earn yield, can't be leveraged. Traders are forced to choose between conviction and capital efficiency. That's broken.",
   solutionTitle: "We built the fix.",
   solutionText:
-    "Arkos turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 25×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.",
+    "Ardento turns prediction market positions into productive collateral. Borrow against them, earn yield from them, leverage them up to 25×. One protocol, purpose-built for a new asset class — no compromises, no custody risk.",
   borrowDesc:
     "Use your Polymarket portfolio as collateral. Our risk engine adapts to market resolution timelines — no liquidation cascades, no surprises. Just capital working for you.",
   lendDesc:

@@ -367,7 +367,7 @@ const Footer = () => (
     <div className="ark-container">
       <div className="ark-divider mb-10" />
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
+        <span className="text-foreground font-bold uppercase tracking-wider text-sm">Ardento</span>
         <div className="flex items-center gap-8">
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>

@@ -123,7 +123,7 @@ const Admin = () => {
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="ark-container flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <span className="text-foreground font-bold uppercase tracking-wider text-sm">Arkos</span>
+            <span className="text-foreground font-bold uppercase tracking-wider text-sm">Ardento</span>
             <span className="ark-mono text-[10px] text-foreground/20 uppercase tracking-widest">Admin</span>
           </div>
           <div className="flex items-center gap-4">
