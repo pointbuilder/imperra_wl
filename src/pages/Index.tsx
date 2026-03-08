@@ -39,7 +39,7 @@ const Nav = () => (
   </nav>
 );
 
-const WAITLIST_OPEN_DATE = new Date('2026-03-25T00:00:00Z');
+const WAITLIST_OPEN_DATE = new Date('2026-04-10T00:00:00Z');
 
 const useCountdown = () => {
   const [now, setNow] = useState(Date.now());
@@ -209,7 +209,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         transition={{ duration: 0.6, delay: 0.6 }}
       >
         <p className="ark-mono text-xs uppercase tracking-widest text-foreground/25 mb-5">
-          Waitlist opens March 25
+          Waitlist opens April 10
         </p>
         <CountdownTimer />
       </motion.div>
@@ -355,6 +355,11 @@ const Security = ({ content }: { content: SiteContent }) => (
           <FadeIn delay={0.15}>
             <p className="text-foreground/40 text-base sm:text-lg leading-relaxed max-w-2xl">
               {content.securityText}
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.25}>
+            <p className="text-foreground/20 text-sm ark-mono mt-8">
+              More details coming soon. Stay tuned.
             </p>
           </FadeIn>
         </div>
