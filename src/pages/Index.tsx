@@ -335,50 +335,6 @@ const Protocol = ({ content }: { content: SiteContent }) => {
   );
 };
 
-const Metrics = ({ content }: { content: SiteContent }) => {
-  const metrics = [
-    { val: content.maxLtv, label: "Max LTV", desc: "Borrow up to half the value of your positions" },
-    { val: content.projectedApy, label: "Projected APY", desc: "Expected yield for USDC lenders" },
-    { val: content.maxLeverage, label: "Max Leverage", desc: "Amplify your conviction with one click" },
-    { val: content.targetTvl, label: "Target TVL", desc: "First-year protocol capacity goal" },
-  ];
-
-  return (
-    <section className="py-24 sm:py-40">
-      <div className="ark-container">
-        <div className="ark-divider mb-16" />
-        <div className="grid md:grid-cols-12 gap-8 mb-16">
-          <div className="md:col-span-3">
-            <FadeIn>
-              <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004) By the numbers</span>
-            </FadeIn>
-          </div>
-          <div className="md:col-span-9">
-            <FadeIn>
-              <h2 className="ark-display text-foreground text-3xl sm:text-5xl normal-case">
-                Built to perform
-              </h2>
-            </FadeIn>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {metrics.map((m, i) => (
-            <FadeIn key={m.label} delay={i * 0.1}>
-              <div className="group">
-                <span className="ark-display text-foreground text-5xl sm:text-6xl lg:text-7xl block mb-4 group-hover:opacity-60 transition-opacity duration-500">
-                  {m.val}
-                </span>
-                <span className="ark-mono text-xs uppercase tracking-widest text-foreground/50 block mb-2">{m.label}</span>
-                <p className="text-foreground/25 text-sm leading-relaxed">{m.desc}</p>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Security = ({ content }: { content: SiteContent }) => (
   <section className="py-24 sm:py-40">
     <div className="ark-container">
@@ -386,7 +342,7 @@ const Security = ({ content }: { content: SiteContent }) => (
       <div className="grid md:grid-cols-12 gap-8">
         <div className="md:col-span-3">
           <FadeIn>
-            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(005) Security</span>
+            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(004) Security</span>
           </FadeIn>
         </div>
         <div className="md:col-span-9">
@@ -406,37 +362,6 @@ const Security = ({ content }: { content: SiteContent }) => (
     </div>
   </section>
 );
-
-const Waitlist = () => (
-  <section id="waitlist" className="py-24 sm:py-40">
-    <div className="ark-container">
-      <div className="ark-divider mb-16" />
-      <div className="grid md:grid-cols-12 gap-8">
-        <div className="md:col-span-3">
-          <FadeIn>
-            <span className="ark-mono text-xs uppercase tracking-widest text-foreground/30">(006) Access</span>
-          </FadeIn>
-        </div>
-        <div className="md:col-span-9">
-          <FadeIn>
-            <h2 className="ark-display text-foreground text-3xl sm:text-5xl lg:text-7xl normal-case mb-4">
-              Early access
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="text-foreground/30 text-base mb-10 max-w-lg">
-              Waitlist opens March 25. Be among the first to leverage prediction markets.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <CountdownTimer />
-          </FadeIn>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
 const Footer = () => (
   <footer className="py-10">
     <div className="ark-container">
@@ -470,9 +395,7 @@ const Index = () => {
       <Problem content={content} />
       <Solution content={content} />
       <Protocol content={content} />
-      <Metrics content={content} />
       <Security content={content} />
-      <Waitlist />
       <Footer />
     </div>
   );
