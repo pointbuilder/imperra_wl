@@ -198,7 +198,7 @@ const Hero = ({ content }: { content: SiteContent }) => (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <p className="text-foreground/50 text-xl sm:text-2xl lg:text-3xl leading-relaxed">
+        <p className="text-foreground/50 text-lg sm:text-xl leading-relaxed">
           {content.heroSubtitle}
         </p>
       </motion.div>
