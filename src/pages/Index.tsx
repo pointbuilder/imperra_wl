@@ -31,15 +31,24 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => (
       const form = e.target as HTMLFormElement;
       const emailInput = form.querySelector('input') as HTMLInputElement;
       const btn = form.querySelector('button') as HTMLButtonElement;
-      const email = emailInput.value;
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        emailInput.setCustomValidity('Enter a valid email');
+        emailInput.reportValidity();
+        return;
+      }
+      emailInput.setCustomValidity('');
 
       btn.textContent = '→ ...';
       btn.disabled = true;
 
       try {
-        await supabase.functions.invoke('telegram-waitlist', {
+        const { error } = await supabase.functions.invoke('telegram-waitlist', {
           body: { email },
         });
+        if (error) throw error;
         btn.textContent = '→ Done ✓';
         emailInput.value = '';
       } catch {
