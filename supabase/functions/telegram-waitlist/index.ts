@@ -12,8 +12,16 @@ serve(async (req) => {
 
   try {
     const { email } = await req.json();
-    if (!email) {
+    if (!email || typeof email !== 'string') {
       return new Response(JSON.stringify({ error: 'Email required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return new Response(JSON.stringify({ error: 'Invalid email' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -29,16 +37,7 @@ serve(async (req) => {
     const date = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-    const text = [
-      `━━━━━━━━━━━━━━━━━━━━`,
-      `⚡️ *ARKOS — New Signup*`,
-      `━━━━━━━━━━━━━━━━━━━━`,
-      ``,
-      `📧  \`${email}\``,
-      ``,
-      `🕐  ${date} · ${time}`,
-      `━━━━━━━━━━━━━━━━━━━━`,
-    ].join('\n');
+    const text = `New waitlist\n${email.trim()}\n${date} ${time}`;
 
     const tgRes = await fetch(
       `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
