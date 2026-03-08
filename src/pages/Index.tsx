@@ -329,7 +329,7 @@ const Footer = () => (
         <div className="flex items-center gap-8">
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Twitter</span>
           <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Discord</span>
-          <span className="ark-mono text-xs uppercase tracking-widest text-foreground/15 cursor-not-allowed" title="Coming soon">Docs</span>
+          <Link to="/docs" className="ark-mono text-xs uppercase tracking-widest text-foreground/40 hover:text-foreground transition-colors">Docs</Link>
         </div>
         <span className="ark-mono text-xs text-foreground/15">© 2026</span>
       </div>
