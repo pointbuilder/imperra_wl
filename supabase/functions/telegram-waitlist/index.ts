@@ -50,18 +50,26 @@ serve(async (req) => {
     // Rate limit: max 5 signups per day from same IP
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
-    const { count } = await supabase
+    const { data: recentSignups, count } = await supabase
       .from('waitlist')
-      .select('id', { count: 'exact', head: true })
+      .select('created_at', { count: 'exact' })
       .eq('ip_address', ip)
-      .gte('created_at', oneDayAgo);
+      .gte('created_at', oneDayAgo)
+      .order('created_at', { ascending: true })
+      .limit(1);
 
     if ((count ?? 0) >= 5) {
-      return new Response(JSON.stringify({ error: 'rate_limited' }), {
+      // Calculate when the oldest entry in the window expires
+      const oldestTime = recentSignups?.[0]?.created_at;
+      const retryAfter = oldestTime
+        ? Math.ceil((new Date(oldestTime).getTime() + 24 * 60 * 60_000 - Date.now()) / 60_000)
+        : 60;
+      return new Response(JSON.stringify({ error: 'rate_limited', retry_after_minutes: Math.max(1, retryAfter) }), {
         status: 429,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
 
     // Save to DB
     const { error: insertError } = await supabase
