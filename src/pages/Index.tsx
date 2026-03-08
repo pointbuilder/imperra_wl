@@ -380,21 +380,13 @@ const Footer = () => (
 );
 
 const Index = () => {
-  const [content, setContent] = useState(getContent());
-
-  useEffect(() => {
-    const handleStorage = () => setContent(getContent());
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <Nav />
-      <Hero content={content} />
-      <Problem content={content} />
-      <Solution content={content} />
-      <Protocol content={content} />
+      <Hero />
+      <Problem />
+      <Solution />
+      <Protocol />
       <ComingSoon />
       <Footer />
     </div>
