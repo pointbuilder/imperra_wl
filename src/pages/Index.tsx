@@ -2,8 +2,6 @@ import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-
-
 const smoothScroll = (id: string) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -358,6 +356,7 @@ const ComingSoon = () => (
     </div>
   </section>
 );
+
 const Footer = () => (
   <footer className="py-10">
     <div className="ark-container">
