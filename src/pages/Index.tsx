@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 
 
@@ -97,43 +98,81 @@ const CountdownTimer = () => {
 };
 
 const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
-  const [status, setStatus] = useState<'idle' | 'done'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const emailInput = form.querySelector('input') as HTMLInputElement;
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      emailInput.setCustomValidity('Enter a valid email');
+      emailInput.reportValidity();
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.message.includes('unique constraint')) {
+          setErrorMessage('This email is already on the waitlist';
+          setStatus('error');
+          setTimeout(() => {
+            setStatus('idle');
+            setErrorMessage('');
+          }, 3000);
+        } else {
+          throw error;
+        }
+      } else {
+        setStatus('done');
+        emailInput.value = '';
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error('[v0] Waitlist signup error:', error);
+      setErrorMessage('Failed to join waitlist. Please try again.');
+      setStatus('error');
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage('');
+      }, 3000);
+    }
+  };
 
   return (
     <form
       className={`flex flex-col items-start gap-4 ${compact ? 'max-w-md' : 'max-w-lg'}`}
-      onSubmit={(e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const emailInput = form.querySelector('input') as HTMLInputElement;
-        const email = emailInput.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailRegex.test(email)) {
-          emailInput.setCustomValidity('Enter a valid email');
-          emailInput.reportValidity();
-          return;
-        }
-        emailInput.setCustomValidity('');
-        setStatus('done');
-        emailInput.value = '';
-        setTimeout(() => setStatus('idle'), 3000);
-      }}
+      onSubmit={handleSubmit}
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
         <input
           type="email"
           required
           placeholder="your@email.com"
-          className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors"
+          className="w-full sm:flex-1 bg-transparent border-b border-foreground/30 pb-3 text-foreground text-base ark-mono outline-none placeholder:text-foreground/15 focus:border-foreground transition-colors disabled:opacity-50"
+          disabled={status === 'loading'}
         />
         <button
           type="submit"
-          className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0"
+          className="text-foreground text-sm ark-mono uppercase tracking-widest border-b border-foreground pb-1 hover:opacity-60 transition-opacity shrink-0 disabled:opacity-50"
+          disabled={status === 'loading'}
         >
-          {status === 'idle' ? '→ Submit' : '→ Done ✓'}
+          {status === 'idle' ? '→ Submit' : status === 'loading' ? '→ Loading...' : status === 'done' ? '→ Done ✓' : '→ Error'}
         </button>
       </div>
+      {errorMessage && (
+        <p className="text-sm ark-mono text-foreground/50">{errorMessage}</p>
+      )}
     </form>
   );
 };
