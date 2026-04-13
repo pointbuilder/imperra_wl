@@ -124,7 +124,7 @@ const WaitlistForm = ({ compact = false }: { compact?: boolean }) => {
 
       if (error) {
         if (error.message.includes('unique constraint')) {
-          setErrorMessage('This email is already on the waitlist';
+          setErrorMessage('This email is already on the waitlist');
           setStatus('error');
           setTimeout(() => {
             setStatus('idle');
